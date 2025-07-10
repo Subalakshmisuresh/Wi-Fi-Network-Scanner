@@ -12,11 +12,43 @@ A simple Python tool to scan nearby Wi-Fi networks using built-in system command
 - No third-party libraries needed
 
 ---
-
-### ▶️ How to Run
- 1.git clone https://github.com/your-username/wifi-network-scanner.git
- 2.Run the script:
+### Run the script:
     -python scanner.py
+### Python code
+```
+import subprocess
+import platform
+
+def scan_wifi_windows():
+    try:
+        output = subprocess.check_output("netsh wlan show networks mode=bssid", shell=True, encoding='utf-8')
+        print("=== Available Wi-Fi Networks ===")
+        print(output)
+    except Exception as e:
+        print("Error scanning Wi-Fi networks:", e)
+
+def scan_wifi_linux():
+    try:
+        output = subprocess.check_output("nmcli dev wifi", shell=True, encoding='utf-8')
+        print("=== Available Wi-Fi Networks ===")
+        print(output)
+    except Exception as e:
+        print("Error scanning Wi-Fi networks:", e)
+
+def main():
+    print("🔍 Scanning for Wi-Fi Networks...")
+    os_type = platform.system()
+
+    if os_type == "Windows":
+        scan_wifi_windows()
+    elif os_type == "Linux":
+        scan_wifi_linux()
+    else:
+        print("This script currently supports only Windows and Linux.")
+
+if __name__ == "__main__":
+    main()
+```
 ### Output Example (Windows)
 ```
 SSID 1 : MyHomeWiFi
